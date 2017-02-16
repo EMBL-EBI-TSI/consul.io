@@ -2,7 +2,7 @@
     "server": false,
     "datacenter": "{{ datacenter  }}",
     "data_dir": "/opt/consul/data",
-    "encrypt": "D+coF7cn6iTLzccTtf4dkg==",
+    "encrypt": "encryption_string",
     "log_level": "DEBUG",
     "enable_syslog": true,
     "bind_addr": "{{ hostvars[inventory_hostname].ansible_default_ipv4.address  }}",

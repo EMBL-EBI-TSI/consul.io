@@ -3,7 +3,7 @@
     "server": true,
     "datacenter": "{{ datacenter  }}",
     "data_dir": "/opt/consul/data",
-    "encrypt": "D+coF7cn6iTLzccTtf4dkg==",
+    "encrypt": "encryption_string",
     "log_level": "INFO",
     "ui" : true,
     "enable_syslog": true,

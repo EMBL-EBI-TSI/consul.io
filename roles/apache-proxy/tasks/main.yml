@@ -45,7 +45,7 @@
   htpasswd:
     path: /etc/httpd/conf/passwdfile
     name: consuladmin
-    password: 'Iamsecureconsul'
+    password: 'put_password_here'
     owner: root
     group: apache
     mode: '0650'
