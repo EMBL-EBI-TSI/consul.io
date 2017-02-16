@@ -1,0 +1,27 @@
+{
+    "server": false,
+    "datacenter": "{{ datacenter  }}",
+    "data_dir": "/opt/consul/data",
+    "encrypt": "D+coF7cn6iTLzccTtf4dkg==",
+    "log_level": "DEBUG",
+    "enable_syslog": true,
+    "bind_addr": "{{ hostvars[inventory_hostname].ansible_default_ipv4.address  }}",
+    "serf_wan_bind": "{{ hostvars[inventory_hostname].ansible_default_ipv4.address  }}",
+    "advertise_addr_wan" : "{{ hostvars[inventory_hostname].ansible_default_ipv4.address  }}",
+    "start_join":["{{ join_address}}"],
+    "rejoin_after_leave": true,
+
+        "service": {
+                "name": "GridFTP",
+                "tags": ["CPU"],
+                "datacenter": " {{ datacenter }}  ",
+                "enableTagOverride": false,
+        "checks": [
+      {
+        "script": "/opt/consul/consul_checks/monitor.py",
+        "interval": "5s"
+      }
+    ]
+  }
+
+}

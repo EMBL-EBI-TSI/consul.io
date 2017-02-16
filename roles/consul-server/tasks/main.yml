@@ -1,0 +1,32 @@
+# set dynamic variables depending on group membership
+- name: define datacenter depending on group gridftp_hx 
+  set_fact:
+     datacenter: "HX"
+  when: '"gridftp_hx" in group_names'
+  
+- name: define datacenter depending on group gridftp_hx 
+  set_fact:
+     datacenter: "HH"
+  when: '"gridftp_hh" in group_names'
+      
+- name: configure consul servers
+  template: 
+     src: roles/consul-server/templates/config.json
+     dest: /opt/consul/config.json
+     mode: '0600'
+  when: "'gridftp-1' in inventory_hostname"  
+
+- name: start consul servers
+  service:
+     name: consul
+     state: started
+  when: "'gridftp-1' in inventory_hostname"
+  
+#- name: restart consul servers
+#  service:
+#     name: consul
+#     state: restarted
+#  when: 
+#     - "'gridftp-1' in inventory_hostname"
+  
+     

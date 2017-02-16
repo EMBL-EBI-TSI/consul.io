@@ -1,0 +1,14 @@
+- name: Deploy and configure consul.io server and agents
+  hosts: gridftp_hx:gridftp_hh
+  
+  vars:
+    ansible_ssh_user: root
+    ansible_ssh_pass: <root password>
+    datacenter: false 
+  
+  roles:
+     - consul-common
+     - consul-server
+     - monitoring
+     - consul-agent
+     - apache-proxy

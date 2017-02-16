@@ -1,0 +1,44 @@
+# consul installation and config
+- name: create consul group
+  group: 
+     name: consul
+     state: present
+     
+- name: create consul user
+  user:
+     name: consul
+     shell: /bin/bash
+     groups: consul
+     
+- name: create folder for consul
+  file:
+     path: /opt/consul
+     state: directory
+     owner: consul
+     group: consul
+     mode: '0700'
+    
+- name: unpack consul
+  unarchive: 
+     src: https://releases.hashicorp.com/consul/0.7.3/consul_0.7.3_linux_amd64.zip
+     dest: /opt/consul
+     remote_src: True
+     
+- name: change consul files ownership
+  file: 
+     dest: /opt/consul
+     owner: consul
+     group: consul
+     mode: '0755'
+     recurse: yes
+     
+- name: configure consul server service 
+  template: 
+     src: roles/consul-common/templates/consul
+     dest: /etc/init.d/
+     mode: '0755'
+     
+- name: enable consul service
+  service:
+     name: consul
+     enabled: yes

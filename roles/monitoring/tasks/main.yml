@@ -1,0 +1,15 @@
+- name: create needed folder
+  file:
+    path: /opt/consul/consul_checks/
+    state: directory
+    owner: consul
+    group: consul
+    mode: '0755'
+
+- name: configure consul monitoring script 
+  template: 
+     src: roles/monitoring/templates/monitor.py
+     dest: /opt/consul/consul_checks/
+     owner: consul
+     group: consul
+     mode: '0755'

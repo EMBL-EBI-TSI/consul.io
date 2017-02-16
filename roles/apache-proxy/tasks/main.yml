@@ -1,0 +1,59 @@
+
+- name: Add EPEL repository needed for pip (Centos7)
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: https://dl.fedoraproject.org/pub/epel/7Server/x86_64/
+  when: 
+    - "'gridftp-1' in inventory_hostname"
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version == "7"
+    
+- name: Add EPEL repository needed for pip (Centos6)
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: https://dl.fedoraproject.org/pub/epel/6Server/x86_64/
+  when: 
+    - "'gridftp-1' in inventory_hostname"
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version == "6"
+
+- name: install needed packages
+  yum:
+    name: "{{item}}"
+    state: present
+    disable_gpg_check: yes
+  with_items:
+    - httpd
+    - python-pip
+  when: "'gridftp-1' in inventory_hostname"
+  
+- name: install needed pip packages
+  pip:
+    name: passlib
+  when: "'gridftp-1' in inventory_hostname"
+    
+- name: configure apache auth proxy
+  template: 
+     src: roles/apache-proxy/templates/consul-httpd.conf
+     dest: /etc/httpd/conf.d/
+     mode: '0600'
+  when: "'gridftp-1' in inventory_hostname"  
+  
+- name: configure password auth
+  htpasswd:
+    path: /etc/httpd/conf/passwdfile
+    name: consuladmin
+    password: 'Iamsecureconsul'
+    owner: root
+    group: apache
+    mode: '0650'
+  when: "'gridftp-1' in inventory_hostname"
+
+
+- name: restart apache proxy
+  service:
+    name: httpd
+    state: restarted
+  when: "'gridftp-1' in inventory_hostname"
